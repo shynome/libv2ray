@@ -11,6 +11,14 @@ import (
 )
 
 var server *core.Instance
+var stopCount int = 0
+
+func increaseStopCount() {
+	stopCount++
+	if stopCount > 5_000_000 {
+		stopCount = 0
+	}
+}
 
 // Start v2ray Sevice
 func Start(jsonConfig string) (err error) {
@@ -46,4 +54,12 @@ func Stop() {
 	s := server
 	server = nil
 	s.Close()
+	increaseStopCount()
+}
+
+func Status() int {
+	if server == nil {
+		return -1
+	}
+	return stopCount
 }
