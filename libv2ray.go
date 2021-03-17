@@ -36,6 +36,7 @@ func Start(jsonConfig string) (err error) {
 	c := make(chan error)
 	go func() {
 		c <- server.Start()
+		server = nil
 	}()
 	go func() {
 		// 如果 1s 后 Start 未退出则认为启动成功
